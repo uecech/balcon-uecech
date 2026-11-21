@@ -1,4 +1,4 @@
-# Balcón de Servicios · UECECH
+# Portal de Servicios · UECECH
 
 Portal principal de la Unidad Educativa “Cap. Edmundo Chiriboga” (Riobamba).
 
