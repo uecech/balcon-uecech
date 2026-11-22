@@ -40,7 +40,7 @@ var MENUS = [
    {t:"Autorización de uso de imagen", url:"autorizacion-imagen.html"},
    {t:"Notificación de alerta", url:"notificacion-alerta.html"},
    {t:"Uso de celulares", url:"#"},
-   {t:"Solicitud de mejora", url:"#"},
+   {t:"Solicitud de mejora", url:"solicitud-mejora.html"},
    {t:"Autorización de salida de estudiantes", url:"autorizacion-salida.html"},
    {t:"Autorización de registro de pertenencias", url:"autorizacion-pertenencias.html"},
    {t:"Modelo de oficio", url:"modelo-oficio.html"}]},

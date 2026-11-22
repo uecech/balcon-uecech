@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitud de Mejora · Portal de Servicios UECECH</title>
+<style>
+  :root{
+    --navy:#0b1f4d;--navy-deep:#0b1f4d;--lightblue:#1fb5a5;--lightblue-soft:#e6f7f5;--red:#d41a2a;--muted:#3a4a73;--border:#d7dce8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#0b1f4d}
+  .cont{display:flex;flex-direction:column;align-items:center;padding:18px 16px 50px}
+
+  /* ---------- Datos de la solicitud y botones ---------- */
+  .datos{width:100%;max-width:794px;border:1px solid var(--border);border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(11,31,77,.08);padding:14px 16px;margin-bottom:16px}
+  .datos .fila{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}
+  .datos label.campo{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:bold;text-transform:uppercase;letter-spacing:.3px;color:var(--muted)}
+  .datos input,.datos select{font:14px Arial,Helvetica,sans-serif;color:var(--navy);padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;background:#fff;min-width:170px}
+  .datos input:focus,.datos select:focus{outline:none;border-color:var(--lightblue);box-shadow:0 0 0 3px rgba(31,181,165,.18)}
+  .datos .btns{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  .datos .nota{margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+  .boton{font:bold 13px Arial,Helvetica,sans-serif;padding:9px 16px;border-radius:18px;border:2px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer}
+  .boton.sec{background:#fff;color:var(--navy);border-color:var(--lightblue)}
+  .boton:disabled{opacity:.6;cursor:wait}
+
+  /* ---------- Configuración (administradores) ---------- */
+  .cfg{width:100%;max-width:794px;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(11,31,77,.10);background:#fff;margin-bottom:16px}
+  .cfg .ch{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 18px 10px}
+  .cfg h2{margin:0;font-size:18px;color:var(--navy);flex:1}
+  .cfg .t{background:var(--lightblue);height:8px}.cfg .r{background:var(--red);height:5px}
+  .cfg .cb{padding:14px 18px 16px}
+  .cfg .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+  .cfg fieldset{border:1px solid var(--border);border-radius:9px;padding:10px 12px 4px;margin:0;min-width:0}
+  .cfg legend{font-weight:bold;font-size:13px;padding:0 6px;color:var(--navy)}
+  .cfg label{display:block;font-size:11.5px;font-weight:bold;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);margin-bottom:8px}
+  .cfg label input[type=text],.cfg label select{display:block;width:100%;margin-top:3px;font:14px Arial,Helvetica,sans-serif;color:var(--navy);padding:7px 9px;border:1.5px solid var(--border);border-radius:7px;background:#fff;text-transform:none;letter-spacing:0}
+  .cfg label.chkl{display:flex;align-items:center;gap:7px;text-transform:none;font-size:13px;letter-spacing:0}
+  .cfg .gen{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 14px;margin-bottom:6px}
+  .cfg .ayuda{font-size:12px;color:var(--muted);margin:8px 0 0}
+
+  /* ---------- Documento (formato de la institución) ---------- */
+  .doc{background:#fff;width:100%;max-width:794px;min-height:1123px;padding:30px 66px 18px;border:1px solid var(--border);box-shadow:0 6px 20px rgba(11,31,77,.12);
+       font-family:Arial,Helvetica,sans-serif;color:#000;font-size:12px;line-height:1.35;display:flex;flex-direction:column}
+  .d-cuerpo{flex:1}
+  .d-head{display:flex;align-items:center;gap:14px}
+  .d-head img{width:72px;height:auto;flex-shrink:0}
+  .d-inst{flex:1;text-align:center;font-family:'Amasis MT Pro',Cambria,Georgia,serif;color:#1b2a4a;font-size:13.3px;line-height:1.25}
+  .d-inst .nom{color:#7a1e22;font-weight:bold;font-size:18.7px;letter-spacing:.2px}
+  .d-inst .amie{font-weight:bold}
+  .d-linea{border-bottom:1.5px solid #1b2a4a;margin:6px 0 10px}
+  .d-tit{margin:0;text-align:center;font-size:12px;font-weight:bold}
+  .d-acu{text-align:center;font-family:Cambria,Georgia,serif;font-size:10.7px;font-weight:bold;margin-bottom:6px}
+  .doc p{margin:0 0 9px}
+  .d-dest{line-height:1.45}
+  .vacio{display:inline-block;min-width:60px;border-bottom:1px solid #000}
+  .in{font:inherit;color:#000;border:none;border-bottom:1px solid #000;background:transparent;padding:0 3px;outline:none;max-width:100%;border-radius:0;-webkit-appearance:none;appearance:none;vertical-align:baseline}
+  .in:focus{background:#eefaf8;border-bottom-color:var(--lightblue)}
+  .in.mal{border-bottom:2px solid var(--red);background:#fff4f5}
+  .d-opc{width:100%;border-collapse:collapse;margin:2px 0 10px}
+  .d-opc td{border:1px solid #9aa3b2;padding:3px 6px;vertical-align:middle}
+  .d-opc td.c{width:70px;text-align:center}
+  .op{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+  .op input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .box{display:inline-block;position:relative;width:13px;height:13px;border:1.3px solid #000;background:#fff;flex-shrink:0;vertical-align:middle}
+  .op input:checked + .box::after,.box.si::after{content:"";position:absolute;left:3px;top:0;width:4px;height:8px;border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .op input:focus-visible + .box{outline:2px solid var(--lightblue);outline-offset:2px}
+  .d-tipos{display:flex;gap:10px 40px;flex-wrap:wrap}
+  .aviso{display:block;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#b3141f;font-weight:bold;margin-top:3px}
+  .aviso:empty{display:none}
+  .d-firma{text-align:center;margin:30px 0 12px}
+  .d-firma .l,.vfirma .l{width:300px;max-width:80%;margin:0 auto 2px;border-bottom:1px solid #000}
+  .d-vice{border:1px solid #000;padding:6px 8px 8px;margin-top:6px}
+  .d-vice .vt{text-align:center;font-weight:bold;margin-bottom:6px}
+  .d-vice .vg{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:8px 16px;margin:4px 14px 12px;font-family:Cambria,Georgia,serif}
+  .d-vice .vg span{display:flex;gap:5px;align-items:flex-start}
+  .d-vice .vg .box{margin-top:2px}
+  .vaut{text-align:center;font-weight:bold;margin:10px 0 26px}
+  .vfirma{text-align:center;margin-bottom:12px}
+  .lin{display:inline-block;border-bottom:1px solid #000;vertical-align:baseline;height:1em}
+  .lin.w1{width:260px}.lin.w2{width:290px}.lin.w3{width:170px}
+  .d-adj{font-weight:bold;margin:4px 0 0 !important;font-size:11px}
+  .d-pie{margin-top:12px;text-align:center;font-family:'Amasis MT Pro',Cambria,Georgia,serif}
+  .d-pie .ln{border-top:1px solid #1b2a4a;margin:0 30px 4px}
+  .d-pie .dir{font-size:10.7px;color:#555}
+  .d-pie .dir b{color:#1b2a4a}
+  .d-pie .sep{color:#9aa3b2;margin:0 6px}
+  .d-pie .lema{color:#1b2a4a;font-weight:bold;font-style:italic;font-size:12px;margin-top:2px}
+
+  @media (max-width:700px){
+    .cfg .grid,.cfg .gen{grid-template-columns:minmax(0,1fr)}
+    .datos .btns{margin-left:0;width:100%}
+    .datos .btns .boton{flex:1;padding:9px 6px;font-size:12px;white-space:nowrap}
+    .datos label.campo{flex:1}
+    .datos input,.datos select{min-width:0;width:100%}
+    body:not(.exportando):not(.impresion) .doc{min-height:0;padding:18px 14px 14px;font-size:13px}
+    body:not(.exportando):not(.impresion) .d-head img{width:54px}
+    body:not(.exportando):not(.impresion) .d-inst{font-size:12px}
+    body:not(.exportando):not(.impresion) .d-inst .nom{font-size:15px}
+    body:not(.exportando):not(.impresion) .d-vice .vg{grid-template-columns:minmax(0,1fr);margin:4px 2px 12px}
+    body:not(.exportando):not(.impresion) .lin.w1,body:not(.exportando):not(.impresion) .lin.w2{width:100%}
+    body:not(.exportando):not(.impresion) .lin.w3{width:60%}
+    body:not(.exportando):not(.impresion) .d-pie .sep{display:none}
+    body:not(.exportando):not(.impresion) .d-pie .dir span.it{display:block}
+    body:not(.exportando):not(.impresion) .d-opc td.c{width:44px}
+  }
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:30px;font:bold 13px Arial,Helvetica,sans-serif;opacity:0;pointer-events:none;transition:.25s;z-index:2000;max-width:92vw;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  @media print{
+    .no-print{display:none !important}
+    .cont{padding:0}
+    .doc{border:none;box-shadow:none}
+  }
+</style>
+<style>
+  /* ===== Encabezado con el diseño del Portal de Servicios ===== */
+  .ue-head{background:#fff;box-shadow:0 2px 10px rgba(11,31,77,.08)}
+  .ue-bar{display:flex;align-items:center;gap:12px;padding:8px 16px;padding-top:calc(8px + env(safe-area-inset-top,0px))}
+  .ue-brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:bold;color:var(--navy);text-decoration:none;letter-spacing:-.3px}
+  .ue-brand small{display:block;font-size:11px;font-weight:normal;color:var(--muted);letter-spacing:0}
+  .ue-brand img{width:54px;height:54px;object-fit:contain}
+  .ue-sp{flex:1}
+  .ue-tag{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:bold;color:var(--navy);border:2px solid var(--lightblue);border-radius:18px;padding:5px 12px;text-transform:uppercase;letter-spacing:.4px}
+  .ue-tag .contador{background:var(--navy);color:#fff;border-radius:12px;padding:1px 9px;font-size:11px}
+  .ue-back{background:var(--navy);color:#fff;text-decoration:none;border-radius:18px;padding:8px 14px;font-weight:bold;font-size:13px;white-space:nowrap}
+  .ue-strip{height:9px;background:linear-gradient(to bottom,var(--lightblue-soft) 0 20%,var(--lightblue) 20% 70%,var(--red) 70% 100%)}
+  .ue-top{padding:12px 24px 0;font-size:14px;color:var(--muted)}
+  .ue-top a{color:var(--muted);text-decoration:none}.ue-top a:hover{text-decoration:underline}
+  .ue-title{margin:12px 22px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 18px rgba(11,31,77,.12)}
+  .ue-title .w{background:#fff;padding:16px 22px}
+  .ue-title h1{margin:0;font-size:clamp(22px,4vw,32px);color:var(--navy)}
+  .ue-title small{display:block;margin-top:4px;color:var(--muted);font-size:13px}
+  .ue-title .t{background:var(--lightblue);height:14px}.ue-title .r{background:var(--red);height:10px}
+  .ue-adm{background:#fff;color:var(--navy);border:2px solid var(--lightblue);border-radius:18px;padding:6px 12px;font:bold 12px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;white-space:nowrap}
+  .ue-adm:hover{background:var(--lightblue-soft)}
+  /* ===== Indicaciones ===== */
+  .indic{width:100%;max-width:850px;margin-top:22px;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(11,31,77,.10);background:#fff}
+  .indic .ih{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px 10px}
+  .indic h2{margin:0;font-size:20px;color:var(--navy);flex:1}
+  .indic .t{background:var(--lightblue);height:8px}.indic .r{background:var(--red);height:5px}
+  .indic .ib{padding:16px 22px 18px}
+  .contenido{font-size:15px;line-height:1.65;color:var(--navy)}
+  .contenido h3{font-size:17px;margin:14px 0 6px}.contenido p{margin:0 0 10px}.contenido ul,.contenido ol{margin:0 0 10px;padding-left:24px}
+  .contenido a{color:#1c3a7a;font-weight:bold}
+  .muted{color:var(--muted)}
+  .meta{margin:10px 0 0;font-size:12px;color:var(--muted)}
+  .ibtn{background:#fff;color:var(--navy);border:2px solid var(--lightblue);border-radius:18px;padding:7px 14px;font:bold 13px Arial,Helvetica,sans-serif;cursor:pointer}
+  .ibtn.pri{background:var(--navy);border-color:var(--navy);color:#fff}.ibtn:disabled{opacity:.6;cursor:wait}
+  #indAdm{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  #indAdm .st{font-size:12px;color:var(--muted)}
+  .tools{display:flex;flex-wrap:wrap;gap:4px;padding:6px;border:1px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0;background:var(--lightblue-soft)}
+  .tools button{border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:6px;padding:5px 9px;font:13px Arial,Helvetica,sans-serif;cursor:pointer;min-width:32px}
+  .tools .sep{width:1px;background:var(--border);margin:2px 3px}
+  .editor{min-height:180px;border:1px solid var(--border);border-radius:0 0 8px 8px;padding:12px 14px;outline:none}
+  .editor:focus{border-color:var(--lightblue);box-shadow:0 0 0 3px rgba(31,181,165,.18)}
+  /* ===== Acceso de administradores ===== */
+  .fondo{position:fixed;inset:0;z-index:1000;background:rgba(11,31,77,.55);display:none;align-items:center;justify-content:center;padding:14px}
+  .fondo.show{display:flex}
+  .modal{background:#fff;border-radius:12px;width:100%;max-width:400px;padding:20px 22px;border-top:5px solid var(--navy)}
+  .modal h3{margin:0 0 6px;color:var(--navy);font-size:17px}
+  .modal p{margin:0 0 12px;font-size:13px;color:var(--muted)}
+  .modal input{width:100%;padding:10px 11px;border-radius:7px;border:1.5px solid var(--border);font:14px Arial,Helvetica,sans-serif;margin-bottom:8px;color:var(--navy)}
+  .modal .err{color:var(--red);font-size:13px;font-weight:bold;min-height:18px;margin:2px 0 8px}
+  .modal .acc{display:flex;justify-content:flex-end;gap:8px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:30px;font:bold 13px Arial,Helvetica,sans-serif;opacity:0;pointer-events:none;transition:.25s;z-index:2000}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  @media(max-width:600px){
+    .ue-brand{font-size:17px}.ue-brand small{display:none}.ue-brand img{width:44px;height:44px}
+    .ue-tag{display:none}.ue-adm{font-size:10.5px;padding:5px 9px}.ue-back{padding:7px 10px;font-size:12px}.ue-bar{gap:8px;padding-left:10px;padding-right:10px}.indic .ib{padding:14px 14px 16px}.ue-top{padding:10px 12px 0}.ue-title{margin:10px 12px 0}
+  }
+</style>
+<link rel="icon" id="favicon">
+<!-- Acceso de administradores del Portal (Supabase) y limpieza del texto de las indicaciones -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<!-- Cinta de opciones del Portal (menús en menu.js) -->
+<script src="menu.js?v=2026112203" defer></script>
+</head>
+<body>
+<header class="ue-head no-print">
+  <div class="ue-bar">
+    <a class="ue-brand" href="index.html"><img id="logoPortal" alt="Sello de la UECECH"><div>Portal de Servicios<small>Unidad Educativa “Cap. Edmundo Chiriboga”</small></div></a>
+    <span class="ue-sp"></span>
+    <button class="ue-adm" id="btnAdmin" type="button">🔐 Administrador</button>
+    <a class="ue-back" href="index.html">← Inicio</a>
+  </div>
+  <div class="ue-strip"></div>
+</header>
+<div class="ue-top no-print"><a href="index.html">🏠 Inicio</a> › Estudiantes › <b>Solicitud de mejora</b></div>
+<div class="ue-title no-print">
+  <div class="w"><h1>Solicitud de Mejora</h1><small>Recuperación de evaluaciones sumativas · Llénela, descárguela en PDF o imprímala</small></div>
+  <div class="t"></div><div class="r"></div>
+</div>
+
+<main class="cont">
+  <section class="datos no-print">
+    <div class="fila">
+      <label class="campo">Fecha de la solicitud<input type="date" id="fFecha"></label>
+      <label class="campo">Sección<select id="fSeccion"><option value="matutina">Matutina</option><option value="vespertina">Vespertina</option></select></label>
+      <div class="btns">
+        <button type="button" class="boton sec" id="btnLimpiar">Limpiar</button>
+        <button type="button" class="boton sec" id="btnImprimir">🖨️ Imprimir</button>
+        <button type="button" class="boton" id="btnPDF">📄 Descargar PDF</button>
+      </div>
+    </div>
+    <p class="nota">Escriba los datos directamente en la solicitud. Los datos no se guardan: solo se usan para generar el documento.</p>
+  </section>
+
+  <section class="cfg no-print" id="cfg" hidden>
+    <div class="ch"><h2>⚙️ Datos del documento</h2><button type="button" class="boton" id="btnCfgGuardar">💾 Guardar</button></div>
+    <div class="t"></div><div class="r"></div>
+    <div class="cb">
+      <div class="gen">
+        <label>Acuerdo Nro.<input type="text" id="cAcuerdo" autocomplete="off"></label>
+        <label>Año lectivo<input type="text" id="cAnio" autocomplete="off" placeholder="Automático"></label>
+      </div>
+      <div class="grid">
+        <fieldset id="cMat"><legend>Sección Matutina</legend>
+          <label>Cargo<select data-k="cargo"><option value="VICERRECTOR">Vicerrector</option><option value="VICERRECTORA">Vicerrectora</option></select></label>
+          <label class="chkl"><input type="checkbox" data-k="encargado"> Encargado/a — se muestra «(E)»</label>
+          <label>Tratamiento<input type="text" data-k="trato" autocomplete="off" placeholder="Señor Magíster"></label>
+          <label>Título abreviado (firma)<input type="text" data-k="titulo" autocomplete="off" placeholder="MSc."></label>
+          <label>Nombre<input type="text" data-k="nombre" autocomplete="off"></label>
+        </fieldset>
+        <fieldset id="cVes"><legend>Sección Vespertina</legend>
+          <label>Cargo<select data-k="cargo"><option value="VICERRECTOR">Vicerrector</option><option value="VICERRECTORA">Vicerrectora</option></select></label>
+          <label class="chkl"><input type="checkbox" data-k="encargado"> Encargado/a — se muestra «(E)»</label>
+          <label>Tratamiento<input type="text" data-k="trato" autocomplete="off" placeholder="Señora Magíster"></label>
+          <label>Título abreviado (firma)<input type="text" data-k="titulo" autocomplete="off" placeholder="MSc."></label>
+          <label>Nombre<input type="text" data-k="nombre" autocomplete="off"></label>
+        </fieldset>
+      </div>
+      <p class="ayuda">Solo los administradores del Portal ven este recuadro. Al guardar, la solicitud de todas las personas muestra estos datos según la sección que elijan.</p>
+    </div>
+  </section>
+
+  <div class="doc" id="hoja">
+    <div class="d-head">
+      <img id="logoDoc" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAACnCAMAAABjJOMjAAABKmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGDiyUnOLWYSYGDIzSspCnJ3UoiIjFJgv8PAyCDJwMygyWCZmFxc4BgQ4MOAE3y7xsAIoi/rgszCrQ4r4EpJLU5mYGD4w8DAEJdcUFTCwMAYw8DAwF1eUgBiZzAwMIgkZYPZNSB2UURkFAMD4wQQOx3CXgJWA2HvAKsJCXJmYGA8w8DA4JCOxE5CYkPtBQHmZCMSXU0EKEmtKAHRbk4MDKAwhYgiwgohxizGwMBszMDAtAQhlr+IgcHiKwMD8wSEWNJMBobtrQwMErcQYioLGBj4WxgYtp1PLi0qg1otxcDAcJrxJHMy6ySObO5vAvaigdImih81JxhJWE9yYw0sj32bXVDF2rlxVs2azP21lw+/NPj/HwDeQVN9gHIyPgAAAYBQTFRFXiYWaJWYlVwcYpNsKGVdHVWZGBgYJWIt5dqknyEdXG6eIyMj4ZsepKOaDpOcV1tg48da2F4TmWRbIBwaJiYmGjOKo5Bt26xWps2uJyZq2ODimKfHtoky8fHxWVlZbU0qy6yautnE1y8LVC1SmpqaVFRUUHXGNoZT1W9P7sgjcI7HhX6MBLDCiw5F2L/CAC7GP2XBIoA0wH+CAAAA/Pz87Ojo1NfWx8jIyAIDs7e1sQECSEdHAQOOlZeViYiIdnd2p6eoVldWADnFaGho89fW7re3ODg48cfHAULMASezq3co3GhoyhcU44eHARmnB1cK5piY6qioBGMK2FdXAQF01UdH1OTYzicnxJc5jqiRsce0rbfIJSUl0Tc37AEB79VZ2bVM4Ht7lwIE0KhG8NhlKkaLAQEBT3hScDYK3nNzucTNB0oJbphz3OTjBjS4LGcyckQVjbaVUWaW8+RuAgICmKWyiZey+PPVBQUFKykqUScKS4ZVlGYo6+fTFhYWBRWXR09uqwAAAIB0Uk5T////////mf////8h/////////91g//////////8HHv//////D1f/////////////////AP/////////9///////+//7///j////////////////////////////V////////////Lf////////////////9O////cur/////sP+0eTPuAAAgu0lEQVR42u2diXsSybbAIewQ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" alt="Sello de la institución">
+      <div class="d-inst">
+        <div class="nom">UNIDAD EDUCATIVA "CAP. EDMUNDO CHIRIBOGA."</div>
+        <div class="amie">Código AMIE 06H00032</div>
+        <div>Riobamba – Ecuador</div>
+        <div>Año Lectivo <span id="dAnio"></span></div>
+      </div>
+    </div>
+    <div class="d-linea"></div>
+    <div class="d-cuerpo">
+      <h2 class="d-tit">SOLICITUD PARA MEJORA DE EVALUACIONES SUMATIVAS.</h2>
+      <div class="d-acu">ACUERDO Nro. <span id="dAcuerdo"></span></div>
+      <p>Riobamba, <span id="dFecha"></span></p>
+      <p class="d-dest"><b id="dTrato"></b><br><b id="dNombre"></b><br><b id="dCargoLargo"></b><br><b>Presente.</b></p>
+      <p>Yo, <input class="in" id="fRep" data-min="34" autocomplete="off" aria-label="Nombre del representante legal"> con cédula de ciudadanía N° <input class="in" id="fCed" data-min="13" inputmode="numeric" maxlength="10" autocomplete="off" aria-label="Cédula"> Representante Legal del estudiante(a): <input class="in" id="fEst" data-min="30" autocomplete="off" aria-label="Nombre del estudiante"> Grado/Curso: <input class="in" id="fCurso" data-min="14" list="lCursos" autocomplete="off" aria-label="Grado o curso"> Paralelo: <input class="in" id="fPar" data-min="5" maxlength="3" autocomplete="off" aria-label="Paralelo"></p>
+      <p>Mediante la presente solicito muy comedidamente, autorizar el proceso de <b>RECUPERACIÓN</b> de Evaluación Sumativa por:</p>
+      <table class="d-opc">
+        <tr><td><label for="oDirecta"><b>Mejora Directa</b> (Evaluación de Recuperación)<br>(Calificación sumativa desde 7 hasta 9 puntos)</label></td>
+            <td class="c"><label class="op"><input type="radio" name="modo" id="oDirecta" value="directa"><span class="box"></span></label></td></tr>
+        <tr><td><label for="oRefuerzo"><b>Mejora con Refuerzo</b> (Actividad refuerzo y Evaluación de Recuperación)<br>(Calificación sumativa desde 0,01 hasta 6,99 puntos)</label></td>
+            <td class="c"><label class="op"><input type="radio" name="modo" id="oRefuerzo" value="refuerzo"><span class="box"></span></label></td></tr>
+      </table>
+      <p>En la asignatura de: <input class="in" id="fAsig" data-min="24" autocomplete="off" aria-label="Asignatura">, con el / la Señor (a) Docente: <input class="in" id="fDoc" data-min="26" autocomplete="off" aria-label="Docente"><br>
+         En vista de haber obtenido la calificación de: <input class="in" id="fNota" data-min="7" inputmode="decimal" maxlength="5" autocomplete="off" aria-label="Calificación"><span class="aviso no-print" id="avisoNota"></span></p>
+      <p class="d-tipos">
+        <label class="op"><input type="radio" name="tipo" id="tSum" value="sumativa"><span class="box"></span> En Evaluación Sumativa</label>
+        <label class="op"><input type="radio" name="tipo" id="tPro" value="proyecto"><span class="box"></span> En Proyecto Interdisciplinar</label>
+      </p>
+      <p>Mi Representado/a, se compromete a cumplir con las actividades planificadas y enviadas por el / la docente en el tiempo establecido, si la recuperación es por Mejora con Refuerzo Pedagógico.</p>
+      <p>Como Representante Legal, me comprometo a monitorear a mi Representado, las actividades que desarrolle y verificar la adecuada preparación para la siguiente evaluación, que será rendida en la fecha y hora establecida por el docente.</p>
+      <div class="d-firma"><div class="l"></div><b>Firma Representante Legal</b></div>
+      <div class="d-vice">
+        <div class="vt">ESPACIO RESERVADO PARA VICERRECTORADO</div>
+        <p>De acuerdo a lo solicitado en el presente oficio, autorizo al Sr./Srta. estudiante continuar con el proceso de Mejora de Calificación Sumativa en modalidad:</p>
+        <div class="vg">
+          <span><i class="box"></i> Mejora Directa (Evaluación de Recuperación)</span>
+          <span><i class="box"></i> Evaluación Sumativa</span>
+          <span><i class="box"></i> Mejora con Refuerzo (Actividad refuerzo y Evaluación de Recuperación)</span>
+          <span><i class="box"></i> Proyecto Interdisciplinar</span>
+        </div>
+        <div class="vaut">AUTORIZADO</div>
+        <div class="vfirma"><div class="l"></div><b id="dFirmaNombre"></b><br><b id="dFirmaCargo"></b></div>
+        <p>NOMBRE DEL DOCENTE DE ASIGNATURA: <span class="lin w1"></span></p>
+        <p style="margin:18px 0 0">FIRMA DOCENTE DE ASIGNATURA: <span class="lin w2"></span><br>Fecha: <span class="lin w3"></span></p>
+      </div>
+      <p class="d-adj">*ADJUNTAR: Copia para Docente de Asignatura y una copia de cédula del Representante Legal.</p>
+    </div>
+    <div class="d-pie">
+      <div class="ln"></div>
+      <div class="dir"><span class="it"><b>Dirección:</b> Av. 9 de Octubre y García Moreno</span><span class="sep">|</span><span class="it"><b>Contacto:</b> 032 940 845</span><span class="sep">|</span><span class="it"><b>Correo:</b> ueedmundochiriboga70@gmail.com</span></div>
+      <div class="lema">“Estudio, Trabajo y Disciplina.”</div>
+    </div>
+  </div>
+  <datalist id="lCursos">
+    <option value="Inicial 1 (3 años)"><option value="Inicial 2 (4 años)"><option value="1ro EGB"><option value="2do EGB"><option value="3ro EGB"><option value="4to EGB"><option value="5to EGB">
+    <option value="6to EGB"><option value="7mo EGB"><option value="8vo EGB"><option value="9no EGB"><option value="10mo EGB"><option value="1ro BGU"><option value="2do BGU"><option value="3ro BGU">
+  </datalist>
+
+  <section class="indic no-print" id="indic" hidden>
+    <div class="ih"><h2>📌 Indicaciones</h2><div id="indAdm"></div></div>
+    <div class="t"></div><div class="r"></div>
+    <div class="ib"><div class="contenido" id="indTxt"><p class="muted">Cargando…</p></div><p class="meta" id="indMeta" hidden></p></div>
+  </section>
+</main>
+
+<div class="fondo no-print" id="login"><form class="modal" id="lform">
+  <h3>🔐 Administradores del Portal</h3>
+  <p>Inicie sesión con su cuenta de administrador del Portal de Servicios para cambiar los datos del vicerrectorado y las indicaciones.</p>
+  <input type="email" id="lmail" placeholder="Correo" autocomplete="username" inputmode="email" required>
+  <input type="password" id="lpass" placeholder="Contraseña" autocomplete="current-password" required>
+  <div class="err" id="lerr"></div>
+  <div class="acc"><button type="button" class="ibtn" id="lcancel">Cancelar</button><button type="submit" class="ibtn pri" id="lgo">Ingresar</button></div>
+</form></div>
+<div class="toast no-print" id="toast"></div>
+
+<script>
+/* ===== Solicitud de mejora ===== */
+const $i=id=>document.getElementById(id);
+$i("logoPortal").src=$i("favicon").href=$i("logoDoc").src;
+const escH=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function avisar(m,ms){const t=$i("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),ms||2800)}
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function hoyISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function anioAuto(){const d=new Date(),y=d.getFullYear();return d.getMonth()>=7?y+" – "+(y+1):(y-1)+" – "+y}
+
+/* Datos que cambian (vicerrector/a de cada sección, acuerdo, año lectivo).
+   Los administradores los editan aquí mismo; se guardan en Supabase (tabla "apartados"). */
+const CFG_SLUG="solicitud-mejora-config";
+const PERSONA_DEF={cargo:"VICERRECTOR",encargado:true,trato:"Señor Magíster",titulo:"MSc.",nombre:"Angel Pilco"};
+const CFG_DEF={acuerdo:"MINEDEC-MINEDEC-2026-00082-A",anio:"",secciones:{matutina:{...PERSONA_DEF},vespertina:{...PERSONA_DEF}}};
+let CFG=JSON.parse(JSON.stringify(CFG_DEF));
+function normalizarCfg(o){
+  const c=JSON.parse(JSON.stringify(CFG_DEF));
+  if(!o||typeof o!=="object")return c;
+  if(typeof o.acuerdo==="string")c.acuerdo=o.acuerdo;
+  if(typeof o.anio==="string")c.anio=o.anio;
+  ["matutina","vespertina"].forEach(s=>{const p=o.secciones&&o.secciones[s];if(!p||typeof p!=="object")return;
+    if(p.cargo==="VICERRECTOR"||p.cargo==="VICERRECTORA")c.secciones[s].cargo=p.cargo;
+    c.secciones[s].encargado=!!p.encargado;
+    ["trato","titulo","nombre"].forEach(k=>{if(typeof p[k]==="string")c.secciones[s][k]=p[k]})});
+  return c;
+}
+
+/* ---------- Pintar el documento ---------- */
+function fechaLarga(iso){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");
+  if(!m)return null;
+  return (+m[3])+" de "+MESES[+m[2]-1]+" del "+m[1];
+}
+function pintar(){
+  const sec=$i("fSeccion").value,p=CFG.secciones[sec];
+  $i("dAnio").textContent=CFG.anio.trim()||anioAuto();
+  $i("dAcuerdo").textContent=CFG.acuerdo;
+  const f=fechaLarga($i("fFecha").value),df=$i("dFecha");
+  if(f)df.textContent=f;else df.innerHTML='<span class="vacio" style="min-width:40px"></span> de <span class="vacio" style="min-width:120px"></span> del <span class="vacio" style="min-width:50px"></span>';
+  $i("dTrato").textContent=p.trato;
+  $i("dNombre").textContent=p.nombre;
+  $i("dCargoLargo").textContent=p.cargo+(p.encargado?" (E)":"")+' DE LA UNIDAD EDUCATIVA "CAP. EDMUNDO CHIRIBOGA G." - SECCIÓN '+(sec==="vespertina"?"VESPERTINA":"MATUTINA");
+  $i("dFirmaNombre").textContent=(p.titulo?p.titulo+" ":"")+p.nombre;
+  $i("dFirmaCargo").textContent=p.cargo+(p.encargado?" (e)":"");
+}
+
+/* ---------- Campos que crecen con el texto ---------- */
+function ajustar(el){el.style.width=Math.max(+el.dataset.min||8,(el.value||"").length+2)+"ch"}
+document.querySelectorAll("#hoja .in").forEach(el=>{ajustar(el);el.addEventListener("input",()=>ajustar(el))});
+
+/* ---------- Cédula ecuatoriana ---------- */
+function cedulaValida(c){
+  if(!/^\d{10}$/.test(c))return false;
+  const pr=+c.slice(0,2);if(!((pr>=1&&pr<=24)||pr===30)||+c[2]>5)return false;
+  let s=0;for(let i=0;i<9;i++){let d=+c[i]*(i%2===0?2:1);if(d>9)d-=9;s+=d}
+  return (10-s%10)%10===+c[9];
+}
+$i("fCed").addEventListener("input",e=>{const el=e.target;el.value=el.value.replace(/\D/g,"").slice(0,10);ajustar(el);
+  el.classList.toggle("mal",el.value.length===10&&!cedulaValida(el.value));el.title=el.classList.contains("mal")?"La cédula no es válida":""});
+
+/* ---------- Calificación y tipo de mejora ---------- */
+function leerNota(){const v=$i("fNota").value.trim().replace(",",".");if(!/^\d{1,2}(\.\d{1,2})?$/.test(v))return null;return +v}
+function modoEsperado(n){if(n==null)return null;if(n>=7&&n<=9)return "directa";if(n>=0.01&&n<7)return "refuerzo";return "fuera"}
+function revisarNota(auto){
+  const raw=$i("fNota").value.trim(),n=leerNota(),esp=modoEsperado(n),a=$i("avisoNota");
+  const sel=(document.querySelector('input[name="modo"]:checked')||{}).value;
+  let msg="";
+  if(raw&&n==null)msg="Escriba la calificación con números, por ejemplo 6,50.";
+  else if(esp==="fuera")msg=n>9?"Con más de 9 puntos no corresponde la recuperación.":"La calificación debe ser desde 0,01 puntos.";
+  else if(esp){
+    if(auto){$i(esp==="directa"?"oDirecta":"oRefuerzo").checked=true}
+    else if(sel&&sel!==esp)msg="Con "+raw+" puntos corresponde "+(esp==="directa"?"Mejora Directa":"Mejora con Refuerzo")+".";
+  }
+  a.textContent=msg;$i("fNota").classList.toggle("mal",!!msg);
+}
+$i("fNota").addEventListener("input",()=>revisarNota(true));
+document.querySelectorAll('input[name="modo"]').forEach(r=>r.addEventListener("change",()=>revisarNota(false)));
+
+$i("fFecha").value=hoyISO();
+try{const s=localStorage.getItem("solicitudMejoraSeccion");if(s==="matutina"||s==="vespertina")$i("fSeccion").value=s}catch(_){}
+$i("fFecha").addEventListener("change",pintar);
+$i("fSeccion").addEventListener("change",()=>{try{localStorage.setItem("solicitudMejoraSeccion",$i("fSeccion").value)}catch(_){}pintar()});
+pintar();
+
+$i("btnLimpiar").onclick=()=>{
+  if(!confirm("¿Borrar todos los datos escritos en la solicitud?"))return;
+  document.querySelectorAll("#hoja .in").forEach(el=>{el.value="";el.classList.remove("mal");el.title="";ajustar(el)});
+  document.querySelectorAll('#hoja input[type="radio"]').forEach(r=>r.checked=false);
+  $i("avisoNota").textContent="";$i("fFecha").value=hoyISO();pintar();
+};
+
+/* ---------- Revisión antes de imprimir o descargar ---------- */
+function faltantes(){
+  const f=[];
+  [["fRep","nombre del representante"],["fCed","cédula"],["fEst","nombre del estudiante"],["fCurso","grado/curso"],["fPar","paralelo"],["fAsig","asignatura"],["fDoc","docente"],["fNota","calificación"]]
+    .forEach(([id,t])=>{if(!$i(id).value.trim())f.push(t)});
+  if(!document.querySelector('input[name="modo"]:checked'))f.push("tipo de mejora (Directa o con Refuerzo)");
+  if(!document.querySelector('input[name="tipo"]:checked'))f.push("Evaluación Sumativa o Proyecto Interdisciplinar");
+  const c=$i("fCed").value;if(c&&!cedulaValida(c))f.push("una cédula válida");
+  return f;
+}
+function confirmarSalida(){
+  const f=faltantes();
+  return !f.length||confirm("Falta completar: "+f.join(", ")+".\n\n¿Desea continuar de todos modos? Podrá llenarlo a mano.");
+}
+
+/* Copia del documento sin campos de formulario (para imprimir y para el PDF) */
+function copiaEstatica(){
+  const clon=$i("hoja").cloneNode(true);
+  clon.removeAttribute("id");
+  clon.querySelectorAll(".no-print").forEach(el=>el.remove());
+  clon.querySelectorAll("[id]").forEach(el=>el.removeAttribute("id"));
+  const orig=[...$i("hoja").querySelectorAll("input")];
+  [...clon.querySelectorAll("input")].forEach((el,i)=>{
+    const o=orig[i];
+    if(el.type==="radio"){const b=el.nextElementSibling;if(b&&o.checked)b.classList.add("si");el.remove();return}
+    const s=document.createElement("span");
+    s.className="vacio";
+    s.textContent=o.value?o.value:" ";
+    s.style.minWidth=o.value?"0":(o.dataset.min||8)+"ch";
+    s.style.padding="0 3px";
+    if(o.value)s.style.borderBottom="1px solid #000";
+    el.replaceWith(s);
+  });
+  return clon;
+}
+function nombreArchivo(){
+  const e=$i("fEst").value.trim().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"");
+  return "Solicitud_Mejora"+(e?"_"+e:"")+".pdf";
+}
+
+/* ---------- Imprimir ---------- */
+$i("btnImprimir").onclick=()=>{
+  if(!confirmarSalida())return;
+  const est=[...document.querySelectorAll("style")].map(s=>s.innerHTML).join("\n");
+  const w=window.open("","_blank");
+  if(!w){avisar("El navegador bloqueó la ventana de impresión. Use «Descargar PDF».",5000);return}
+  w.document.open();
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Solicitud de mejora</title><style>'+est+
+    '\n*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;background:#fff}@page{size:A4;margin:0}'+
+    '.doc{width:210mm;max-width:none;height:296mm;min-height:0;overflow:hidden;border:none;box-shadow:none;margin:0 auto;padding:9mm 17mm 5mm;font-size:12px}'+
+    '@media screen{body{background:#eef1f6;padding:10mm 0}.doc{box-shadow:0 4px 18px rgba(0,0,0,.15)}}</style></head><body class="impresion">'+
+    copiaEstatica().outerHTML+'<script>window.onload=function(){setTimeout(function(){window.focus();window.print()},350)};<\/script></body></html>');
+  w.document.close();
+};
+
+/* ---------- PDF ---------- */
+function cargarScript(src){return new Promise((ok,mal)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=()=>mal(new Error("No se pudo cargar "+src));document.head.appendChild(s)})}
+$i("btnPDF").onclick=async()=>{
+  if(!confirmarSalida())return;
+  const b=$i("btnPDF"),txt=b.textContent;let caja=null;
+  b.disabled=true;b.textContent="Generando PDF…";
+  try{
+    const t=[];
+    if(!window.html2canvas)t.push(cargarScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"));
+    if(!window.jspdf)t.push(cargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"));
+    await Promise.all(t);
+    if(document.activeElement)document.activeElement.blur();
+    document.body.classList.add("exportando");
+    caja=document.createElement("div");
+    caja.style.cssText="position:fixed;left:-10000px;top:0;width:794px;background:#fff";
+    const c=copiaEstatica();
+    c.style.cssText="width:794px;max-width:none;min-height:1123px;border:none;box-shadow:none;margin:0;padding:34px 64px 20px;font-size:12px";
+    caja.appendChild(c);document.body.appendChild(caja);
+    const canvas=await html2canvas(c,{scale:2,backgroundColor:"#ffffff",useCORS:true,windowWidth:1100});
+    const {jsPDF}=window.jspdf,pdf=new jsPDF("p","mm","a4");
+    let w=210,h=canvas.height*210/canvas.width;
+    if(h>297){h=297;w=canvas.width*297/canvas.height}
+    pdf.addImage(canvas.toDataURL("image/jpeg",0.92),"JPEG",(210-w)/2,0,w,h);
+    pdf.save(nombreArchivo());
+    avisar("PDF descargado ✓");
+  }catch(e){console.error(e);avisar("No se pudo generar el PDF. Revise su conexión e inténtelo de nuevo.",5000)}
+  finally{if(caja)caja.remove();document.body.classList.remove("exportando");b.disabled=false;b.textContent=txt}
+};
+</script>
+<script>
+/* ===== Administradores: datos del documento e indicaciones (Supabase) ===== */
+const SUPABASE_URL="https://phnezgktkozpuvoyqykn.supabase.co";
+const SUPABASE_KEY="sb_publishable_9DE-GGaO-kVwW24V97ZQ1Q_8EF6tUYv";
+const INDIC_SLUG="solicitud-mejora-indicaciones";
+const INDIC_TITULO="Solicitud de mejora · Indicaciones";
+let sb=null,esAdmin=false,adminEmail="",indicHTML="",editando=false;
+try{if(window.supabase&&window.supabase.createClient)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){console.error(e)}
+
+async function cargarCfg(){
+  if(!sb)return;
+  try{
+    const {data,error}=await sb.from("apartados").select("contenido").eq("slug",CFG_SLUG).maybeSingle();
+    if(error){console.error(error);return}
+    if(data&&data.contenido){try{CFG=normalizarCfg(JSON.parse(data.contenido))}catch(e){console.error(e)}}
+    pintar();llenarCfg();
+  }catch(e){console.error(e)}
+}
+const FS={matutina:"cMat",vespertina:"cVes"};
+function llenarCfg(){
+  $i("cAcuerdo").value=CFG.acuerdo;$i("cAnio").value=CFG.anio;$i("cAnio").placeholder="Automático: "+anioAuto();
+  Object.entries(FS).forEach(([s,id])=>{const p=CFG.secciones[s];
+    $i(id).querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;if(el.type==="checkbox")el.checked=!!p[k];else el.value=p[k]})});
+}
+function leerCfg(){
+  const c={acuerdo:$i("cAcuerdo").value.trim(),anio:$i("cAnio").value.trim(),secciones:{}};
+  Object.entries(FS).forEach(([s,id])=>{const p={};
+    $i(id).querySelectorAll("[data-k]").forEach(el=>{p[el.dataset.k]=el.type==="checkbox"?el.checked:el.value.trim()});c.secciones[s]=p});
+  return normalizarCfg(c);
+}
+Object.values(FS).forEach(id=>{const fs=$i(id),sel=fs.querySelector('[data-k="cargo"]'),tr=fs.querySelector('[data-k="trato"]');
+  sel.addEventListener("change",()=>{const f=sel.value==="VICERRECTORA";
+    tr.value=f?tr.value.replace(/^Señor\b/,"Señora"):tr.value.replace(/^Señora\b/,"Señor")});});
+$i("btnCfgGuardar").onclick=async()=>{
+  const c=leerCfg();
+  for(const s of ["matutina","vespertina"]){if(!c.secciones[s].nombre){avisar("Escriba el nombre de la autoridad de la sección "+s+".",4000);return}}
+  if(!c.acuerdo){avisar("Escriba el número de acuerdo.",4000);return}
+  const b=$i("btnCfgGuardar");b.disabled=true;
+  const {error}=await sb.from("apartados").upsert({slug:CFG_SLUG,titulo:"Solicitud de mejora · Datos del documento",contenido:JSON.stringify(c)});
+  b.disabled=false;
+  if(error){console.error(error);alert("No se pudo guardar: "+error.message);return}
+  CFG=c;pintar();llenarCfg();avisar("Datos del documento guardados ✓");
+};
+
+if(window.DOMPurify)DOMPurify.addHook("afterSanitizeAttributes",n=>{if(n.tagName==="A"){n.setAttribute("target","_blank");n.setAttribute("rel","noopener")}});
+function limpiarHTML(html){
+  if(!window.DOMPurify){const d=document.createElement("div");d.textContent=html;return "<p>"+d.innerHTML+"</p>"}
+  return DOMPurify.sanitize(html,{ALLOWED_TAGS:["p","br","b","strong","i","em","u","h3","h4","ul","ol","li","a","blockquote","hr","div"],ALLOWED_ATTR:["href","target","rel"]});
+}
+async function cargarIndicaciones(){
+  const sec=$i("indic"),txt=$i("indTxt"),meta=$i("indMeta");
+  if(editando)return;
+  let fecha=null;
+  if(sb){
+    const {data,error}=await sb.from("apartados").select("contenido,actualizado").eq("slug",INDIC_SLUG).maybeSingle();
+    if(editando)return;
+    if(error){console.error(error);sec.hidden=false;txt.innerHTML='<p class="muted">No se pudieron cargar las indicaciones. Revise su conexión.</p>';controles();return}
+    indicHTML=(data&&data.contenido)||"";fecha=data&&data.actualizado;
+  }
+  if(indicHTML){txt.innerHTML=limpiarHTML(indicHTML);sec.hidden=false}
+  else{txt.innerHTML='<p class="muted">Todavía no hay indicaciones. Use «✎ Agregar indicaciones» para escribirlas.</p>';sec.hidden=!esAdmin}
+  meta.hidden=!fecha;if(fecha)meta.textContent="Última actualización: "+new Date(fecha).toLocaleDateString("es-EC",{day:"numeric",month:"long",year:"numeric"});
+  controles();
+}
+function controles(){
+  const pa=$i("indAdm");if(editando)return;
+  pa.innerHTML=esAdmin?'<button class="ibtn pri" id="bEditar" type="button">✎ '+(indicHTML?"Editar indicaciones":"Agregar indicaciones")+'</button>':"";
+  if(esAdmin)$i("bEditar").onclick=editar;
+}
+const HERR=[["Subtítulo","Subtítulo","formatBlock","h3"],["¶","Párrafo normal","formatBlock","p"],0,
+  ["<b>B</b>","Negrita","bold"],["<i>I</i>","Cursiva","italic"],["<u>U</u>","Subrayado","underline"],0,
+  ["•","Lista","insertUnorderedList"],["1.","Lista numerada","insertOrderedList"],0,
+  ["🔗","Insertar enlace","link"],["⌫","Quitar formato","removeFormat"],["↶","Deshacer","undo"],["↷","Rehacer","redo"]];
+let rango=null;
+function guardarSel(){const s=getSelection();if(s.rangeCount&&$i("ed")&&$i("ed").contains(s.anchorNode))rango=s.getRangeAt(0).cloneRange()}
+function restaurarSel(){const ed=$i("ed");ed.focus();const s=getSelection();s.removeAllRanges();
+  if(rango&&ed.contains(rango.startContainer))s.addRange(rango);else{const r=document.createRange();r.selectNodeContents(ed);r.collapse(false);s.addRange(r)}}
+function editar(){
+  editando=true;$i("indic").hidden=false;$i("indMeta").hidden=true;
+  $i("indTxt").innerHTML='<div class="tools" id="tools">'+HERR.map((h,i)=>h?'<button type="button" title="'+h[1]+'" data-i="'+i+'">'+h[0]+'</button>':'<span class="sep"></span>').join("")+'</div>'+
+    '<div class="editor contenido" id="ed" contenteditable="true" aria-label="Indicaciones de la solicitud de mejora"></div>';
+  $i("indAdm").innerHTML='<span class="st" id="est"></span><button class="ibtn" id="bCancelar" type="button">Cancelar</button><button class="ibtn pri" id="bGuardar" type="button">💾 Guardar</button>';
+  const ed=$i("ed");ed.innerHTML=indicHTML?limpiarHTML(indicHTML):"<p><br></p>";
+  try{document.execCommand("defaultParagraphSeparator",false,"p")}catch(_){}
+  ["keyup","mouseup","input","focus"].forEach(ev=>ed.addEventListener(ev,guardarSel));
+  ed.addEventListener("paste",e=>{e.preventDefault();const h=e.clipboardData.getData("text/html");
+    if(h)document.execCommand("insertHTML",false,limpiarHTML(h));else document.execCommand("insertText",false,e.clipboardData.getData("text/plain"))});
+  $i("tools").addEventListener("mousedown",e=>{if(e.target.closest("button"))e.preventDefault()});
+  $i("tools").addEventListener("click",e=>{
+    const b=e.target.closest("button");if(!b)return;const h=HERR[+b.dataset.i],cmd=h[2],val=h[3];
+    if(cmd==="link"){guardarSel();let u=prompt("Dirección del enlace (https://…):","https://");if(!u||u==="https://")return;
+      if(!/^(https?:|mailto:|tel:)/i.test(u))u="https://"+u;restaurarSel();
+      if(getSelection().isCollapsed)document.execCommand("insertHTML",false,'<a href="'+escH(u)+'">'+escH(u)+'</a>');else document.execCommand("createLink",false,u);guardarSel();return}
+    restaurarSel();document.execCommand(cmd,false,val?"<"+val+">":null);guardarSel();
+  });
+  $i("bCancelar").onclick=()=>{if(ed.innerHTML!==limpiarHTML(indicHTML||"<p><br></p>")&&!confirm("¿Descartar los cambios?"))return;editando=false;cargarIndicaciones()};
+  $i("bGuardar").onclick=guardarIndicaciones;
+  ed.focus();
+}
+async function guardarIndicaciones(){
+  const ed=$i("ed"),b=$i("bGuardar");
+  let html=limpiarHTML(ed.innerHTML).trim();
+  html=html.replace(/<p>\s*<\/p>/g,"");
+  if(!ed.textContent.trim())html="";
+  b.disabled=true;$i("est").textContent="Guardando…";
+  const {error}=await sb.from("apartados").upsert({slug:INDIC_SLUG,titulo:INDIC_TITULO,contenido:html});
+  b.disabled=false;
+  if(error){console.error(error);$i("est").textContent="";alert("No se pudo guardar: "+error.message);return}
+  indicHTML=html;editando=false;avisar("Indicaciones guardadas ✓");cargarIndicaciones();
+}
+
+async function revisarAdmin(){
+  esAdmin=false;adminEmail="";let err="";
+  if(sb){
+    const {data:{session}}=await sb.auth.getSession();
+    if(session){
+      const {data,error}=await sb.from("administradores").select("user_id").eq("user_id",session.user.id).maybeSingle();
+      if(error)err=error.message;else if(data){esAdmin=true;adminEmail=session.user.email||""}
+    }
+  }
+  const bt=$i("btnAdmin");bt.textContent=esAdmin?"Salir (administrador)":"🔐 Administrador";bt.title=esAdmin?"Sesión: "+adminEmail:"";
+  $i("cfg").hidden=!esAdmin;if(esAdmin)llenarCfg();
+  return err;
+}
+$i("btnAdmin").onclick=async()=>{
+  if(!sb){avisar("No se pudo conectar con el sistema de administradores. Revise su conexión.",5000);return}
+  if(esAdmin){
+    if(editando&&!confirm("Hay cambios sin guardar en las indicaciones. ¿Salir de todos modos?"))return;
+    await sb.auth.signOut();editando=false;await revisarAdmin();cargarIndicaciones();avisar("Sesión cerrada");return}
+  const err=await revisarAdmin();
+  if(esAdmin){cargarIndicaciones();avisar("Modo administrador ✓");return}
+  if(err){avisar("⚠ No se pudo verificar los permisos: "+err,6000);return}
+  $i("lerr").textContent="";$i("login").classList.add("show");setTimeout(()=>$i("lmail").focus(),50);
+};
+function cerrarLogin(){$i("login").classList.remove("show");$i("lpass").value=""}
+$i("lcancel").onclick=cerrarLogin;
+$i("lform").onsubmit=async e=>{
+  e.preventDefault();const b=$i("lgo");b.disabled=true;$i("lerr").textContent="";
+  try{
+    const {error}=await sb.auth.signInWithPassword({email:$i("lmail").value.trim(),password:$i("lpass").value});
+    if(error){$i("lerr").textContent="Correo o contraseña incorrectos.";return}
+    const err=await revisarAdmin();
+    if(!esAdmin){await sb.auth.signOut();$i("lerr").textContent=err?"No se pudo verificar los permisos: "+err:"Esta cuenta no es administradora del Portal.";return}
+    cerrarLogin();avisar("Modo administrador ✓");cargarIndicaciones();
+    $i("cfg").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(x){console.error(x);$i("lerr").textContent="Sin conexión. Inténtelo de nuevo."}
+  finally{b.disabled=false}
+};
+cargarCfg();
+revisarAdmin().then(cargarIndicaciones);
+</script>
+</body>
+</html>
