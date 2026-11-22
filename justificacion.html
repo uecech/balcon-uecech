@@ -630,7 +630,7 @@
           clonedDoc.querySelectorAll('input[type="text"], input[type="date"], input[type="time"]').forEach(input => {
             const cs = win.getComputedStyle(input);
             const span = clonedDoc.createElement('span');
-            span.textContent = input.value || '\u00A0';
+            span.textContent = (input.type === 'date' && /^\d{4}-\d{2}-\d{2}$/.test(input.value) ? input.value.split('-').reverse().join('/') : input.value) || '\u00A0';
             span.style.display = 'inline-block';
             span.style.boxSizing = 'border-box';
             span.style.width = cs.width;
