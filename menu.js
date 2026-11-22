@@ -50,7 +50,7 @@ var MENUS = [
    {t:"Cronograma Sierra - Amazonía", url:"#"},
    {t:"Distributivo", url:"distributivo.html"},
    {t:"Doc Acomp / Coordinadores", url:"acompanamiento.html"},
-   {t:"Docentes PPE", url:"#"},
+   {t:"Docentes PPE", url:"docentes-ppe.html"},
    {t:"Cobertura DECE", url:"#"},
    {t:"Horarios de clases", items:[
      {t:"EGBS - Bachillerato", url:"horarios.html"}]},
