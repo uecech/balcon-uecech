@@ -273,7 +273,7 @@ $("topmenu").innerHTML=MENUS.map((M,i)=>M.items
   :`<li><a href="${esc(M.url)}">${esc(M.t)}</a></li>`).join("");
 document.querySelectorAll(".menubar>ul>li>button").forEach(b=>b.onclick=e=>{
   e.stopPropagation();const li=b.parentElement,o=!li.classList.contains("open");
-  closeAll();li.classList.toggle("open",o);b.setAttribute("aria-expanded",o);
+  closeAll();li.classList.remove("nh");li.classList.toggle("open",o);b.setAttribute("aria-expanded",o);
 });
 function closeAll(){document.querySelectorAll(".menubar>ul>li.open").forEach(l=>{l.classList.remove("open");l.firstElementChild.setAttribute("aria-expanded","false")})}
 document.addEventListener("click",e=>{if(!e.target.closest(".menubar"))closeAll()});

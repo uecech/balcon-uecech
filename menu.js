@@ -202,7 +202,7 @@ function iniciar(){
     b.addEventListener("click", function(e){
       e.stopPropagation();
       var li = b.parentElement, abrir = !li.classList.contains("open");
-      cerrarTodo(); li.classList.toggle("open", abrir); b.setAttribute("aria-expanded", abrir);
+      cerrarTodo(); li.classList.remove("nh"); li.classList.toggle("open", abrir); b.setAttribute("aria-expanded", abrir);
     });
   });
   nav.querySelectorAll(".uem-dd").forEach(function(dd){
