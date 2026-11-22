@@ -51,7 +51,7 @@ var MENUS = [
    {t:"Distributivo", url:"distributivo.html"},
    {t:"Doc Acomp / Coordinadores", url:"acompanamiento.html"},
    {t:"Docentes PPE", url:"docentes-ppe.html"},
-   {t:"Cobertura DECE", url:"#"},
+   {t:"Cobertura DECE", url:"cobertura-dece.html"},
    {t:"Horarios de clases", items:[
      {t:"EGBS - Bachillerato", url:"horarios.html"}]},
    {t:"Resolución de conflictos", url:"conflictos.html"},
