@@ -120,7 +120,7 @@
   .barra-app .quien{flex:1; min-width:200px; font-size:12.5px; color:var(--muted)}
   .barra-app .tag{background:var(--lightblue-soft); border:1px solid var(--lightblue); color:var(--navy); padding:6px 12px; border-radius:18px; font-size:11.5px; font-weight:bold; text-transform:uppercase; letter-spacing:.4px; display:flex; align-items:center; gap:8px}
   .barra-app .tag .contador{background:var(--navy); color:#fff; border-radius:12px; padding:2px 9px; font-size:11px}
-  @media (max-width:1080px){ .panel{position:static; max-height:none; overflow:visible} }
+  @media (max-width:1080px){ .panel{position:static; max-height:none; overflow:visible} .app{grid-template-columns:minmax(0,1fr) !important} .hoja{overflow-x:auto} }
   @media (max-width:700px){ .barra-app{margin:12px 12px 0} .app{padding:14px 12px} .hoja{padding:18px 16px 22px} .doc-head .code{display:none} }
   .btn-logout{
     background:#fff; border:2px solid var(--lightblue); color:var(--navy);
@@ -399,6 +399,7 @@
 </style>
 <!-- Acceso de administradores del Portal (Supabase) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>@media (max-width:1080px){.panel{position:static !important;max-height:none !important;overflow:visible !important}}</style>
 </head>
 <body>
 
