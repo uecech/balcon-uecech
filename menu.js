@@ -8,6 +8,22 @@
    url:"#"  → página interna del inicio, editable por los administradores.
    Otro enlace → se abre ese enlace (full:true = sistema externo).
    ===================================================================== */
+/* ---------- Ícono de la pestaña (sello de la institución) en todas las páginas ---------- */
+(function(){
+  var V = "?v=1";
+  function poner(){
+    var head = document.head; if(!head) return;
+    var icons = head.querySelectorAll('link[rel~="icon"]');
+    if(!icons.length){ var l = document.createElement("link"); l.rel = "icon"; head.appendChild(l); icons = [l]; }
+    Array.prototype.forEach.call(icons, function(l){ l.type = "image/png"; l.href = "favicon.png" + V; });
+    if(!head.querySelector('link[rel="apple-touch-icon"]')){
+      var a = document.createElement("link"); a.rel = "apple-touch-icon"; a.href = "apple-touch-icon.png" + V; head.appendChild(a);
+    }
+  }
+  poner();
+  window.addEventListener("load", poner);   // por si la página cambia el ícono al cargar
+})();
+
 (function(){
 "use strict";
 

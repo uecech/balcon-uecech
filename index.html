@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>UECECH · Portal de Servicios</title>
+<link rel="icon" type="image/png" href="favicon.png?v=1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1">
 <style>
 :root{
   --navy:#0b1f4d;          /* azul marino: todas las letras */
@@ -158,6 +160,82 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
 .err{color:var(--red);font-size:13px;min-height:18px;margin:0 0 8px}
 .mact{display:flex;justify-content:flex-end;gap:8px}
 
+/* ===== Noticias institucionales (inicio) ===== */
+#noticias h2 .nadm{margin-left:auto}
+.nlist{display:flex;flex-direction:column;gap:22px}
+.nresto{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.ncard{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(11,31,77,.10);transition:.2s;cursor:pointer;text-align:left;font:inherit;color:var(--navy);padding:0}
+.ncard:hover,.ncard:focus-visible{transform:translateY(-4px);box-shadow:0 12px 26px rgba(11,31,77,.18);outline:none}
+.ncard:focus-visible{box-shadow:0 0 0 3px var(--turq),0 12px 26px rgba(11,31,77,.18)}
+.nimg{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--navy) 0%,#163a7a 55%,var(--turq) 100%);overflow:hidden;flex:none}
+.nimg img.f{width:100%;height:100%;object-fit:cover;display:block}
+.nimg .ph{position:absolute;inset:0;display:grid;place-items:center}
+.nimg .ph img{width:34%;max-width:120px;opacity:.95;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+.nimg .chip{position:absolute;left:12px;top:12px;background:var(--red);color:var(--white);font:bold 11px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.4px;padding:5px 10px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.nflag{height:7px;flex:none;background:linear-gradient(to bottom,var(--turq) 0 58%,var(--red) 58% 100%)}
+.ntxt{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px;flex:1}
+.nfecha{font-size:12px;color:var(--navy-soft);font-weight:bold;text-transform:uppercase;letter-spacing:.3px}
+.ncard h3{margin:0;font-size:17px;line-height:1.3;color:var(--navy)}
+.ncard p{margin:0;font-size:14px;line-height:1.5;color:var(--navy-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nmas{margin-top:auto;padding-top:4px;font-weight:bold;font-size:13px;color:var(--navy);border-bottom:2px solid var(--turq);align-self:flex-start}
+.ncard:hover .nmas{border-bottom-color:var(--red)}
+/* Noticia destacada (la primera) */
+.ncard.dest{flex-direction:row}
+.ncard.dest .nimg{flex:0 0 56%;aspect-ratio:auto;min-height:300px}
+.ncard.dest .nflag{width:7px;height:auto;background:linear-gradient(to right,var(--turq) 0 58%,var(--red) 58% 100%)}
+.ncard.dest .ntxt{padding:24px 26px;justify-content:center}
+.ncard.dest h3{font-size:clamp(20px,2.4vw,28px)}
+.ncard.dest p{-webkit-line-clamp:5;font-size:15px}
+.ncard.dest .ntag{display:inline-block;align-self:flex-start;background:var(--turq-soft);color:var(--navy);border:1px solid var(--turq);border-radius:12px;padding:3px 10px;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.4px}
+.nvacio{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--navy-soft)}
+/* Lector de noticia */
+.nbox{width:min(760px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.nbox .nimg{aspect-ratio:16/8}
+.nbox .nscroll{overflow:auto}
+.nbox .nbody{padding:18px 22px 8px}
+.nbox h3{margin:6px 0 12px;font-size:clamp(20px,3vw,26px);color:var(--navy)}
+.nbox .contenido{font-size:15.5px}
+.nbox .nfoot{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;padding:12px 22px 16px;border-top:1px solid var(--line)}
+.nbox .nfoot a.btn{text-decoration:none}
+.nx{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--navy);font:bold 18px Arial,Helvetica,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+/* Editor de noticias (administradores) */
+.ebox{width:min(820px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.ebox .eh{padding:14px 20px 10px}
+.ebox .eh h3{margin:0;color:var(--navy)}
+.ebox .eh p{margin:4px 0 0;font-size:13px;color:var(--navy-soft)}
+.ebox .escroll{overflow:auto;padding:4px 20px 12px;background:#f7f9fc;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ebox .efoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 20px 16px}
+.ebox .efoot .st{flex:1;font-size:13px;color:var(--navy-soft)}
+.nit{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--turq);border-radius:10px;padding:12px 14px;margin-top:12px}
+.nit:first-child{border-left-color:var(--red)}
+.nit .ih{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.nit .ih b{flex:1;font-size:14px}
+.nit .ih button{width:32px;height:30px;border:1px solid var(--line);background:var(--white);border-radius:6px;cursor:pointer;color:var(--navy);font-size:14px}
+.nit .ih button:disabled{opacity:.35;cursor:default}
+.nit .g{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:8px 10px}
+.nit label{display:block;font-size:11.5px;font-weight:bold;text-transform:uppercase;letter-spacing:.3px;color:var(--navy-soft)}
+.nit label.w{grid-column:1/-1}
+.nit input,.nit textarea{display:block;width:100%;margin-top:3px;font:14px Arial,Helvetica,sans-serif;color:var(--navy);padding:7px 9px;border:1.5px solid var(--line);border-radius:7px;background:var(--white);text-transform:none;letter-spacing:0}
+.nit textarea{resize:vertical;min-height:60px;line-height:1.45}
+.nit input:focus,.nit textarea:focus{outline:none;border-color:var(--turq);box-shadow:0 0 0 3px rgba(31,181,165,.18)}
+.nit .mal{border-color:var(--red)!important;background:#fff4f5}
+.nit .im{display:flex;align-items:center;gap:10px;flex-wrap:wrap;grid-column:1/-1}
+.nit .im .pv{width:120px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--turq));display:grid;place-items:center;color:#fff;font-size:11px;flex:none}
+.nit .im .pv img{width:100%;height:100%;object-fit:cover}
+.nit .im .btn{padding:6px 12px;font-size:13px}
+.nadd{display:block;width:100%;margin-top:12px;padding:12px;border:2px dashed var(--turq);border-radius:10px;background:var(--turq-soft);color:var(--navy);font:bold 14px Arial,Helvetica,sans-serif;cursor:pointer}
+.nadd:disabled{opacity:.5;cursor:default}
+@media(max-width:760px){
+  .ncard.dest{flex-direction:column}
+  .ncard.dest .nimg{flex:none;aspect-ratio:16/9;min-height:0}
+  .ncard.dest .nflag{width:auto;height:7px;background:linear-gradient(to bottom,var(--turq) 0 58%,var(--red) 58% 100%)}
+  .ncard.dest .ntxt{padding:14px 16px 16px}
+  .nit .g{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .nit .g label:first-child{grid-column:1/-1}
+  .nbox .nbody{padding:14px 16px 6px}.nbox .nfoot{padding:10px 16px 14px}
+  .ebox .escroll{padding:4px 10px 12px}.ebox .eh,.ebox .efoot{padding-left:14px;padding-right:14px}
+}
+
 @media(max-width:1180px){.menubar>ul{padding:0 4px}.menubar>ul>li>a,.menubar>ul>li>button{padding:12px 8px;font-size:11.5px}}
 @media(max-width:1100px){.menubar>ul>li>a,.menubar>ul>li>button{padding:12px 5px;font-size:10.5px}}
 @media(max-width:1020px){
@@ -179,7 +257,7 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <!-- Menús y accesos principales (compartidos por todas las páginas) -->
-<script src="menu.js?v=2026112203"></script>
+<script src="menu.js?v=2026112501"></script>
 </head>
 <body>
 <div id="ov"></div>
@@ -228,6 +306,22 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
       <div class="mact"><button type="button" class="btn" id="lcancel">Cancelar</button><button type="submit" class="btn pri" id="lgo">Ingresar</button></div>
     </form>
   </div>
+</div>
+
+<!-- Noticias: lector y editor -->
+<div class="modal" id="nver" role="dialog" aria-modal="true" aria-labelledby="nvTit">
+  <div class="nbox"><div class="nscroll">
+    <div class="nimg" id="nvImg"></div><div class="nflag"></div>
+    <div class="nbody"><div class="nfecha" id="nvFecha"></div><h3 id="nvTit"></h3><div class="contenido" id="nvTxt"></div></div>
+  </div><div class="nfoot" id="nvFoot"></div></div>
+</div>
+<div class="modal" id="ned" role="dialog" aria-modal="true" aria-labelledby="neTit">
+  <div class="ebox">
+    <div class="eh"><h3 id="neTit">📰 Noticias del inicio</h3><p>Entre 3 y 5 noticias. La primera aparece como destacada; use ↑ ↓ para cambiar el orden.</p></div>
+    <div class="escroll"><div id="neList"></div><button type="button" class="nadd" id="neAdd">＋ Agregar noticia</button></div>
+    <div class="efoot"><span class="st" id="neEst"></span><button type="button" class="btn" id="neCancel">Cancelar</button><button type="button" class="btn pri" id="neSave">💾 Guardar noticias</button></div>
+  </div>
+  <input type="file" id="neFile" accept="image/*" hidden>
 </div>
 
 <footer id="contacto"><div class="strip"></div><p>Unidad Educativa “Cap. Edmundo Chiriboga” © <span id="yr"></span> · Todos los derechos reservados<br><button class="adm" id="admlink" type="button" hidden>🔐 Acceso administradores</button></p></footer>
@@ -297,7 +391,8 @@ function render(f){
   current=null;$("hero").style.display="";$("crumb").innerHTML="🏠 Inicio";
   f=(f||"").toLowerCase().trim();
   if(!f){
-    $("app").innerHTML=`<section id="principales"><h2>Accesos principales<em>Lo más utilizado</em></h2><div class="grid">${PRINCIPALES.map(circle).join("")}</div></section>`;
+    $("app").innerHTML=`<section id="principales"><h2>Accesos principales<em>Lo más utilizado</em></h2><div class="grid">${PRINCIPALES.map(circle).join("")}</div></section><section id="noticias" hidden></section>`;
+    pintarNoticias();
     $("empty").style.display="none";return;
   }
   const r=TODOS.filter(x=>(x.n+" "+(x.d||"")+" "+(x.g||"")).toLowerCase().includes(f));
@@ -517,11 +612,163 @@ async function revisarAdmin(){
   }
   $("abar").classList.toggle("show",isAdmin);$("amail").textContent="Modo administrador · "+userMail;
   $("admlink").hidden=!sb||isAdmin;
-  controles();
+  controles();pintarNoticias();
 }
+
+/* ===================== Noticias institucionales =====================
+   Se guardan en Supabase (tabla "apartados", slug "noticias-inicio") como JSON.
+   Todos las ven; solo los administradores del Portal pueden editarlas. */
+const N_SLUG="noticias-inicio",N_MAX=5,N_MIN=3;
+let noticias=[],nCargadas=false,nBorrador=null,nOriginal="";
+const urlOk=u=>/^https:\/\/[^\s"<>]+$/i.test(u||"");
+const linkOk=u=>/^(https?:\/\/|mailto:)[^\s"<>]+$/i.test(u||"");
+function fechaN(iso){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");if(!m)return "";
+  return new Date(+m[1],+m[2]-1,+m[3]).toLocaleDateString("es-EC",{day:"numeric",month:"long",year:"numeric"})}
+function hoyN(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function normN(x){x=x&&typeof x==="object"?x:{};const s=k=>typeof x[k]==="string"?x[k].trim():"";
+  return {titulo:s("titulo"),fecha:/^\d{4}-\d{2}-\d{2}$/.test(s("fecha"))?s("fecha"):"",cat:s("cat"),resumen:s("resumen"),texto:s("texto"),
+    img:urlOk(s("img"))?s("img"):"",link:linkOk(s("link"))?s("link"):"",linkTxt:s("linkTxt")}}
+function imgN(n,chip){
+  const c=chip&&n.cat?`<span class="chip">${esc(n.cat)}</span>`:"";
+  return n.img?`<img class="f" src="${esc(n.img)}" alt="" loading="lazy">${c}`:`<div class="ph"><img src="${esc($("logo").src)}" alt=""></div>${c}`;
+}
+function tarjetaN(n,i){
+  return `<button type="button" class="ncard${i===0?" dest":""}" data-n="${i}" aria-label="Leer noticia: ${esc(n.titulo)}">
+    <div class="nimg">${imgN(n,i!==0)}</div><div class="nflag"></div>
+    <div class="ntxt">${i===0&&n.cat?`<span class="ntag">${esc(n.cat)}</span>`:""}${n.fecha?`<span class="nfecha">📅 ${esc(fechaN(n.fecha))}</span>`:""}
+    <h3>${esc(n.titulo)}</h3><p>${esc(n.resumen)}</p><span class="nmas">Leer más →</span></div></button>`;
+}
+function pintarNoticias(){
+  const s=$("noticias");if(!s)return;
+  if(!nCargadas&&!isAdmin){s.hidden=true;return}
+  if(!noticias.length&&!isAdmin){s.hidden=true;return}
+  s.hidden=false;
+  const btn=isAdmin?`<button type="button" class="btn pri nadm" id="nEditar">✎ Administrar noticias</button>`:"";
+  s.innerHTML=`<h2>Noticias institucionales<em>Lo más reciente de la UECECH</em>${btn}</h2>`+
+    (noticias.length?`<div class="nlist">${tarjetaN(noticias[0],0)}${noticias.length>1?`<div class="nresto">${noticias.slice(1).map((n,i)=>tarjetaN(n,i+1)).join("")}</div>`:""}</div>`
+      :`<div class="nvacio">Todavía no hay noticias publicadas. Use «✎ Administrar noticias» para agregar entre ${N_MIN} y ${N_MAX}.</div>`);
+  if(isAdmin)$("nEditar").onclick=abrirEditorN;
+}
+document.addEventListener("click",e=>{const c=e.target.closest(".ncard");if(c)verNoticia(+c.dataset.n)});
+async function cargarNoticias(){
+  if(!sb){nCargadas=true;return}
+  try{
+    const {data,error}=await sb.from("apartados").select("contenido").eq("slug",N_SLUG).maybeSingle();
+    if(error)throw error;
+    let arr=[];try{const o=JSON.parse(data&&data.contenido||"[]");arr=Array.isArray(o)?o:(o.noticias||[])}catch(_){}
+    noticias=arr.map(normN).filter(n=>n.titulo).slice(0,N_MAX);
+  }catch(err){console.error(err)}
+  nCargadas=true;pintarNoticias();
+}
+
+/* ---------- Lector ---------- */
+const nver=$("nver");
+function parrafos(t){return t.split(/\n{2,}/).map(p=>p.trim()).filter(Boolean).map(p=>"<p>"+esc(p).replace(/\n/g,"<br>")+"</p>").join("")}
+function verNoticia(i){
+  const n=noticias[i];if(!n)return;
+  $("nvImg").innerHTML=imgN(n,true)+`<button type="button" class="nx" id="nvX" aria-label="Cerrar">✕</button>`;
+  $("nvFecha").textContent=n.fecha?"📅 "+fechaN(n.fecha):"";
+  $("nvTit").textContent=n.titulo;
+  $("nvTxt").innerHTML=parrafos(n.texto||n.resumen);
+  $("nvFoot").innerHTML=(n.link?`<a class="btn" href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.linkTxt||"Ver más información")} ↗</a>`:"")+`<button type="button" class="btn pri" id="nvCerrar">Cerrar</button>`;
+  $("nvX").onclick=$("nvCerrar").onclick=cerrarNoticia;
+  nver.querySelector(".nscroll").scrollTop=0;
+  nver.classList.add("show");document.body.classList.add("noscroll");setTimeout(()=>$("nvCerrar").focus(),30);
+}
+function cerrarNoticia(){nver.classList.remove("show");document.body.classList.remove("noscroll")}
+nver.addEventListener("click",e=>{if(e.target===nver)cerrarNoticia()});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(nver.classList.contains("show"))cerrarNoticia();else if(ned.classList.contains("show"))$("neCancel").click()});
+
+/* ---------- Editor (administradores) ---------- */
+const ned=$("ned");let nSubiendo=-1;
+function nuevaN(){return {titulo:"",fecha:hoyN(),cat:"",resumen:"",texto:"",img:"",link:"",linkTxt:""}}
+function abrirEditorN(){
+  nBorrador=noticias.length?noticias.map(n=>({...n})):[nuevaN()];
+  nOriginal=JSON.stringify(noticias);
+  $("neEst").textContent="";pintarEditorN();
+  ned.classList.add("show");document.body.classList.add("noscroll");
+}
+function cerrarEditorN(){ned.classList.remove("show");document.body.classList.remove("noscroll");nBorrador=null}
+function campo(i,k,et,extra,w){return `<label${w?' class="w"':""}>${et}<input data-i="${i}" data-k="${k}" value="${esc(nBorrador[i][k])}" ${extra||""}></label>`}
+function pintarEditorN(){
+  const L=nBorrador.length;
+  $("neList").innerHTML=nBorrador.map((n,i)=>`<div class="nit">
+    <div class="ih"><b>${i===0?"⭐ Noticia destacada":"Noticia "+(i+1)}</b>
+      <button type="button" data-a="up" data-i="${i}" title="Subir" ${i===0?"disabled":""}>↑</button>
+      <button type="button" data-a="down" data-i="${i}" title="Bajar" ${i===L-1?"disabled":""}>↓</button>
+      <button type="button" data-a="del" data-i="${i}" title="Eliminar">🗑</button></div>
+    <div class="g">
+      ${campo(i,"titulo","Título *",'maxlength="140" autocomplete="off"')}
+      ${campo(i,"fecha","Fecha *",'type="date"')}
+      ${campo(i,"cat","Categoría",'maxlength="30" autocomplete="off" placeholder="Ej.: Eventos" list="neCats"')}
+      <label class="w">Resumen * <small style="text-transform:none;font-weight:normal">(se ve en la tarjeta)</small><textarea data-i="${i}" data-k="resumen" maxlength="300" rows="2">${esc(n.resumen)}</textarea></label>
+      <label class="w">Texto completo <small style="text-transform:none;font-weight:normal">(se ve al abrir la noticia; deje una línea en blanco entre párrafos)</small><textarea data-i="${i}" data-k="texto" rows="4">${esc(n.texto)}</textarea></label>
+      <div class="im"><div class="pv">${n.img?`<img src="${esc(n.img)}" alt="">`:"Sin imagen"}</div>
+        <button type="button" class="btn" data-a="img" data-i="${i}">${nSubiendo===i?"Subiendo…":n.img?"🖼 Cambiar imagen":"🖼 Subir imagen"}</button>
+        ${n.img?`<button type="button" class="btn" data-a="noimg" data-i="${i}">Quitar</button>`:""}</div>
+      ${campo(i,"link","Enlace (opcional)",'type="url" inputmode="url" placeholder="https://…" autocomplete="off"')}
+      ${campo(i,"linkTxt","Texto del botón",'maxlength="40" placeholder="Ver más información" autocomplete="off"')}
+    </div></div>`).join("")+`<datalist id="neCats"><option value="Eventos"><option value="Comunicado"><option value="Logros"><option value="Académico"><option value="Deportes"><option value="Cultura"></datalist>`;
+  $("neAdd").disabled=L>=N_MAX;
+  $("neAdd").textContent=L>=N_MAX?`Máximo ${N_MAX} noticias`:"＋ Agregar noticia";
+}
+$("neList").addEventListener("input",e=>{const el=e.target,i=+el.dataset.i,k=el.dataset.k;if(!k||!nBorrador[i])return;
+  nBorrador[i][k]=el.value;el.classList.remove("mal");});
+$("neList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b)return;const i=+b.dataset.i,a=b.dataset.a,B=nBorrador;
+  if(a==="up"&&i>0)[B[i-1],B[i]]=[B[i],B[i-1]];
+  else if(a==="down"&&i<B.length-1)[B[i+1],B[i]]=[B[i],B[i+1]];
+  else if(a==="del"){if((B[i].titulo||B[i].resumen)&&!confirm("¿Eliminar la noticia «"+(B[i].titulo||"sin título")+"»?"))return;B.splice(i,1)}
+  else if(a==="noimg")B[i].img="";
+  else if(a==="img"){if(nSubiendo>=0)return;$("neFile").dataset.i=i;$("neFile").click();return}
+  pintarEditorN();
+});
+$("neAdd").onclick=()=>{if(nBorrador.length>=N_MAX)return;nBorrador.push(nuevaN());pintarEditorN();
+  const its=$("neList").querySelectorAll(".nit");its[its.length-1].scrollIntoView({behavior:"smooth",block:"center"});its[its.length-1].querySelector("input").focus({preventScroll:true})};
+$("neFile").onchange=async e=>{
+  const inp=e.target,i=+inp.dataset.i;let file=inp.files[0];inp.value="";if(!file||!nBorrador||!nBorrador[i])return;
+  if(!/^image\//.test(file.type))return alert("Elija una imagen (JPG, PNG o WEBP).");
+  if(file.size>20*1024*1024)return alert("La imagen supera los 20 MB.");
+  nSubiendo=i;pintarEditorN();$("neSave").disabled=true;$("neEst").textContent="Subiendo imagen…";
+  try{
+    file=await reducir(file);
+    const nombre=file.name.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^\w.\-]+/g,"_");
+    const ruta=`noticias/${Date.now()}-${nombre}`;
+    const {error}=await sb.storage.from("archivos").upload(ruta,file,{contentType:file.type||undefined});
+    if(error)throw error;
+    if(nBorrador&&nBorrador[i])nBorrador[i].img=sb.storage.from("archivos").getPublicUrl(ruta).data.publicUrl;
+    $("neEst").textContent="✔ Imagen agregada. Recuerde guardar.";
+  }catch(err){console.error(err);$("neEst").textContent="";alert("No se pudo subir la imagen: "+(err.message||err))}
+  finally{nSubiendo=-1;$("neSave").disabled=false;if(nBorrador)pintarEditorN()}
+};
+$("neCancel").onclick=()=>{
+  if(nSubiendo>=0)return;
+  const cambio=JSON.stringify(nBorrador.map(normN).filter(n=>n.titulo||n.resumen||n.texto||n.img))!==nOriginal;
+  if(cambio&&!confirm("¿Descartar los cambios en las noticias?"))return;cerrarEditorN();
+};
+$("neSave").onclick=async()=>{
+  const lista=nBorrador.filter(n=>(n.titulo+n.resumen+n.texto+n.img).trim());
+  const marcar=(i,k)=>{const el=$("neList").querySelector(`[data-i="${nBorrador.indexOf(lista[i])}"][data-k="${k}"]`);if(el){el.classList.add("mal");el.scrollIntoView({behavior:"smooth",block:"center"});el.focus({preventScroll:true})}};
+  for(let i=0;i<lista.length;i++){const n=lista[i];
+    if(!n.titulo.trim()){marcar(i,"titulo");return alert("Falta el título de la noticia "+(i+1)+".")}
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(n.fecha)){marcar(i,"fecha");return alert("Falta la fecha de «"+n.titulo.trim()+"».")}
+    if(!n.resumen.trim()){marcar(i,"resumen");return alert("Falta el resumen de «"+n.titulo.trim()+"».")}
+    if(n.link.trim()&&!linkOk(n.link.trim())){marcar(i,"link");return alert("El enlace de «"+n.titulo.trim()+"» debe empezar con https://")}
+  }
+  if(lista.length&&lista.length<N_MIN&&!confirm("Se recomiendan al menos "+N_MIN+" noticias y hay "+lista.length+". ¿Guardar de todos modos?"))return;
+  const limpias=lista.map(normN).slice(0,N_MAX);
+  $("neSave").disabled=true;$("neEst").textContent="Guardando…";
+  const {error}=await sb.from("apartados").upsert({slug:N_SLUG,titulo:"Noticias del inicio",contenido:JSON.stringify({noticias:limpias})});
+  $("neSave").disabled=false;
+  if(error){console.error(error);$("neEst").textContent="";return alert("No se pudo guardar: "+error.message)}
+  noticias=limpias;cerrarEditorN();pintarNoticias();
+  $("noticias").scrollIntoView({behavior:"smooth",block:"start"});
+};
+ned.addEventListener("click",e=>{if(e.target===ned)$("neCancel").click()});
 
 route();
 revisarAdmin();
+cargarNoticias();
 if(sb)sb.auth.onAuthStateChange(ev=>{if(ev==="SIGNED_OUT")setTimeout(revisarAdmin,0)});
 </script>
 </body>
