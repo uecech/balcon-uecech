@@ -168,10 +168,11 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
 .ncard:hover,.ncard:focus-visible{transform:translateY(-4px);box-shadow:0 12px 26px rgba(11,31,77,.18);outline:none}
 .ncard:focus-visible{box-shadow:0 0 0 3px var(--turq),0 12px 26px rgba(11,31,77,.18)}
 .nimg{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,var(--navy) 0%,#163a7a 55%,var(--turq) 100%);overflow:hidden;flex:none}
-.nimg img.f{width:100%;height:100%;object-fit:cover;display:block}
+.nimg img.f{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;z-index:1}
+.nimg img.fb{position:absolute;inset:-24px;width:calc(100% + 48px);height:calc(100% + 48px);object-fit:cover;filter:blur(18px) brightness(.8);transform:scale(1.05)}
 .nimg .ph{position:absolute;inset:0;display:grid;place-items:center}
 .nimg .ph img{width:34%;max-width:120px;opacity:.95;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
-.nimg .chip{position:absolute;left:12px;top:12px;background:var(--red);color:var(--white);font:bold 11px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.4px;padding:5px 10px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.nimg .chip{z-index:2;position:absolute;left:12px;top:12px;background:var(--red);color:var(--white);font:bold 11px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.4px;padding:5px 10px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .nflag{height:7px;flex:none;background:linear-gradient(to bottom,var(--turq) 0 58%,var(--red) 58% 100%)}
 .ntxt{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px;flex:1}
 .nfecha{font-size:12px;color:var(--navy-soft);font-weight:bold;text-transform:uppercase;letter-spacing:.3px}
@@ -190,14 +191,14 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
 .nvacio{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--navy-soft)}
 /* Lector de noticia */
 .nbox{width:min(760px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.nbox .nimg{aspect-ratio:16/8}
+.nbox .nimg{aspect-ratio:auto;height:min(56vh,430px)}
 .nbox .nscroll{overflow:auto}
 .nbox .nbody{padding:18px 22px 8px}
 .nbox h3{margin:6px 0 12px;font-size:clamp(20px,3vw,26px);color:var(--navy)}
 .nbox .contenido{font-size:15.5px}
 .nbox .nfoot{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;padding:12px 22px 16px;border-top:1px solid var(--line)}
 .nbox .nfoot a.btn{text-decoration:none}
-.nx{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--navy);font:bold 18px Arial,Helvetica,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.nx{z-index:3;position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--navy);font:bold 18px Arial,Helvetica,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 /* Editor de noticias (administradores) */
 .ebox{width:min(820px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.3)}
 .ebox .eh{padding:14px 20px 10px}
@@ -221,11 +222,12 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
 .nit .mal{border-color:var(--red)!important;background:#fff4f5}
 .nit .im{display:flex;align-items:center;gap:10px;flex-wrap:wrap;grid-column:1/-1}
 .nit .im .pv{width:120px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--turq));display:grid;place-items:center;color:#fff;font-size:11px;flex:none}
-.nit .im .pv img{width:100%;height:100%;object-fit:cover}
+.nit .im .pv img{width:100%;height:100%;object-fit:contain;background:#0b1f4d}
 .nit .im .btn{padding:6px 12px;font-size:13px}
 .nadd{display:block;width:100%;margin-top:12px;padding:12px;border:2px dashed var(--turq);border-radius:10px;background:var(--turq-soft);color:var(--navy);font:bold 14px Arial,Helvetica,sans-serif;cursor:pointer}
 .nadd:disabled{opacity:.5;cursor:default}
 @media(max-width:760px){
+  .nbox .nimg{height:min(42vh,300px)}
   .ncard.dest{flex-direction:column}
   .ncard.dest .nimg{flex:none;aspect-ratio:16/9;min-height:0}
   .ncard.dest .nflag{width:auto;height:7px;background:linear-gradient(to bottom,var(--turq) 0 58%,var(--red) 58% 100%)}
@@ -630,7 +632,7 @@ function normN(x){x=x&&typeof x==="object"?x:{};const s=k=>typeof x[k]==="string
     img:urlOk(s("img"))?s("img"):"",link:linkOk(s("link"))?s("link"):"",linkTxt:s("linkTxt")}}
 function imgN(n,chip){
   const c=chip&&n.cat?`<span class="chip">${esc(n.cat)}</span>`:"";
-  return n.img?`<img class="f" src="${esc(n.img)}" alt="" loading="lazy">${c}`:`<div class="ph"><img src="${esc($("logo").src)}" alt=""></div>${c}`;
+  return n.img?`<img class="fb" src="${esc(n.img)}" alt="" aria-hidden="true" loading="lazy"><img class="f" src="${esc(n.img)}" alt="" loading="lazy">${c}`:`<div class="ph"><img src="${esc($("logo").src)}" alt=""></div>${c}`;
 }
 function tarjetaN(n,i){
   return `<button type="button" class="ncard${i===0?" dest":""}" data-n="${i}" aria-label="Leer noticia: ${esc(n.titulo)}">
