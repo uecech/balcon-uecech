@@ -94,10 +94,32 @@ section{margin-top:28px}
 section h2{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;margin:0 0 20px;color:var(--navy);font-size:26px}
 section h2 em{font-size:14px;font-weight:normal;border-left:2px solid var(--turq);padding-left:12px;color:var(--navy-soft)}
 .grid{display:flex;flex-wrap:wrap;gap:28px 34px;justify-content:center}
-.item{width:160px;text-align:center;text-decoration:none;color:var(--navy)}
-.ic{width:120px;height:120px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:var(--white);border:4px solid var(--turq);box-shadow:0 0 0 4px var(--white),0 0 0 7px var(--red),0 10px 18px rgba(11,31,77,.2);transition:.2s}
-.item:hover .ic,.item:focus-visible .ic{transform:translateY(-4px) scale(1.05);box-shadow:0 0 0 4px var(--white),0 0 0 7px var(--red),0 14px 22px rgba(11,31,77,.3)}
-.item b{font-size:13px;text-transform:uppercase;display:block;color:var(--navy)}
+.item{position:relative;isolation:isolate;width:160px;text-align:center;text-decoration:none;color:var(--navy);-webkit-tap-highlight-color:transparent;outline:none}
+.ic{position:relative;width:120px;height:120px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:radial-gradient(circle at 50% 35%,var(--white) 55%,var(--turq-soft) 100%);border:4px solid var(--turq);box-shadow:0 0 0 4px var(--white),0 0 0 7px var(--red),0 10px 18px rgba(11,31,77,.2);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+/* Anillo giratorio turquesa/rojo que aparece al pasar el cursor */
+.ic::before{content:"";position:absolute;inset:-12px;border-radius:50%;z-index:-1;background:conic-gradient(from 0deg,var(--turq),var(--red),var(--navy),var(--turq));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));opacity:0;transform:scale(.85);transition:opacity .3s,transform .35s;animation:uegiro 2.6s linear infinite;animation-play-state:paused}
+/* Brillo que cruza el círculo */
+.ic::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.85) 50%,transparent 65%);background-size:250% 100%;background-position:120% 0;pointer-events:none}
+.ic .em{display:inline-block;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.item:hover .ic,.item:focus-visible .ic{transform:translateY(-6px) scale(1.07);box-shadow:0 0 0 4px var(--white),0 16px 26px rgba(11,31,77,.28)}
+.item:hover .ic::before,.item:focus-visible .ic::before{opacity:1;transform:scale(1);animation-play-state:running}
+.item:hover .ic::after,.item:focus-visible .ic::after{animation:uebrillo .8s ease-out}
+.item:hover .em,.item:focus-visible .em{animation:uesalto .7s cubic-bezier(.34,1.56,.64,1) forwards}
+.item:active .ic{transform:scale(.94);transition-duration:.1s}
+.item b{position:relative;display:inline-block;padding-bottom:3px;font-size:13px;text-transform:uppercase;color:var(--navy)}
+.item b::after{content:"";position:absolute;left:50%;right:50%;bottom:0;height:2px;background:var(--red);transition:left .3s,right .3s}
+.item:hover b::after,.item:focus-visible b::after{left:0;right:0}
+.item:focus-visible .ic{outline:3px solid var(--navy);outline-offset:12px}
+@keyframes uegiro{to{rotate:360deg}}
+@keyframes uebrillo{from{background-position:120% 0}to{background-position:-30% 0}}
+@keyframes uesalto{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.22) rotate(-10deg)}55%{transform:scale(1.1) rotate(8deg)}75%{transform:scale(1.15) rotate(-3deg)}100%{transform:scale(1.12) rotate(0)}}
+/* Aparición escalonada al entrar en pantalla */
+.rv{opacity:0;transform:translateY(22px) scale(.96);transition:opacity .55s ease,transform .6s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+/* Toque en celular: onda */
+.onda{position:absolute;left:50%;top:60px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:3px solid var(--turq);pointer-events:none;animation:ueonda .6s ease-out forwards}
+@keyframes ueonda{from{transform:scale(1);opacity:.9}to{transform:scale(1.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.ic,.ic::before,.ic::after,.ic .em,.rv{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}.onda{display:none}}
 .item small{display:block;margin-top:4px;color:var(--navy-soft);font-size:11px}
 .empty{display:none;color:var(--navy-soft);margin-top:24px;text-align:center}
 
@@ -252,7 +274,7 @@ footer .adm{color:var(--navy-soft);font-size:11px;background:none;border:0;curso
   .hero{margin:12px 12px 0}.hero img{width:60px;height:60px}
   main{padding:8px 12px 32px}
   .grid{gap:24px 10px}.item{width:46%}
-  .ic{width:104px;height:104px;font-size:42px}
+  .ic{width:104px;height:104px;font-size:42px}.onda{top:52px;width:104px;height:104px;margin:-52px 0 0 -52px}
 }
 </style>
 <!-- Conexión con Supabase (contenido editable) y limpieza segura del HTML -->
@@ -388,17 +410,17 @@ const TODOS=[...PRINCIPALES];
   if(x.items)walk(x.items,path.concat(x.t));
   else if(!TODOS.some(p=>p.n.toLowerCase()===x.t.toLowerCase()))TODOS.push({n:x.t,url:x.url,full:x.full,i:x.full?"🎓":"🔗",g:path.join(" › ")});
 })})(MENUS,[]);
-const circle=x=>`<a class="item" href="${esc(x.url)}"${x.full?' data-full="1"':""}><div class="ic">${x.i}</div><b>${esc(x.n)}</b><small>${esc(x.d||x.g||"")}</small></a>`;
+const circle=x=>`<a class="item" href="${esc(x.url)}"${x.full?' data-full="1"':""}><div class="ic"><span class="em">${x.i}</span></div><b>${esc(x.n)}</b><small>${esc(x.d||x.g||"")}</small></a>`;
 function render(f){
   current=null;$("hero").style.display="";$("crumb").innerHTML="🏠 Inicio";
   f=(f||"").toLowerCase().trim();
   if(!f){
     $("app").innerHTML=`<section id="principales"><h2>Accesos principales<em>Lo más utilizado</em></h2><div class="grid">${PRINCIPALES.map(circle).join("")}</div></section><section id="noticias" hidden></section>`;
-    pintarNoticias();
+    pintarNoticias();revelar();
     $("empty").style.display="none";return;
   }
   const r=TODOS.filter(x=>(x.n+" "+(x.d||"")+" "+(x.g||"")).toLowerCase().includes(f));
-  $("app").innerHTML=r.length?`<section><h2>Resultados<em>${r.length} encontrado(s)</em></h2><div class="grid">${r.map(circle).join("")}</div></section>`:"";
+  setTimeout(revelar,0);$("app").innerHTML=r.length?`<section><h2>Resultados<em>${r.length} encontrado(s)</em></h2><div class="grid">${r.map(circle).join("")}</div></section>`:"";
   $("empty").style.display=r.length?"none":"block";
 }
 $("q").oninput=e=>{
@@ -660,7 +682,7 @@ async function cargarNoticias(){
     let arr=[];try{const o=JSON.parse(data&&data.contenido||"[]");arr=Array.isArray(o)?o:(o.noticias||[])}catch(_){}
     noticias=arr.map(normN).filter(n=>n.titulo).slice(0,N_MAX);
   }catch(err){console.error(err)}
-  nCargadas=true;pintarNoticias();
+  nCargadas=true;pintarNoticias();revelar();
 }
 
 /* ---------- Lector ---------- */
@@ -763,10 +785,25 @@ $("neSave").onclick=async()=>{
   const {error}=await sb.from("apartados").upsert({slug:N_SLUG,titulo:"Noticias del inicio",contenido:JSON.stringify({noticias:limpias})});
   $("neSave").disabled=false;
   if(error){console.error(error);$("neEst").textContent="";return alert("No se pudo guardar: "+error.message)}
-  noticias=limpias;cerrarEditorN();pintarNoticias();
+  noticias=limpias;cerrarEditorN();pintarNoticias();revelar();
   $("noticias").scrollIntoView({behavior:"smooth",block:"start"});
 };
 ned.addEventListener("click",e=>{if(e.target===ned)$("neCancel").click()});
+
+/* ===================== Accesos principales dinámicos ===================== */
+const sinMov=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+const obsRv="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");obsRv.unobserve(e.target)}}),{threshold:.12,rootMargin:"0px 0px -30px 0px"}):null;
+function revelar(){
+  if(sinMov||!obsRv)return;
+  document.querySelectorAll("#app .grid,#noticias .nlist,#noticias .nresto").forEach(g=>{
+    let k=0;[...g.children].forEach(el=>{if(el.classList.contains("rv")||el.classList.contains("nresto"))return;
+      el.classList.add("rv");el.style.setProperty("--d",Math.min(k++,10)*70+"ms");obsRv.observe(el)});
+  });
+}
+document.addEventListener("pointerdown",e=>{
+  const a=e.target.closest(".item");if(!a||sinMov||e.pointerType==="mouse")return;
+  const o=document.createElement("span");o.className="onda";a.appendChild(o);setTimeout(()=>o.remove(),650);
+});
 
 route();
 revisarAdmin();
